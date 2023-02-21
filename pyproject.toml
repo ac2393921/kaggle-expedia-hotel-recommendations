@@ -7,9 +7,8 @@ readme = "README.md"
 packages = [{include = "colab_mlops"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-numba = "0.56.4"
-mlflow = "^2.1.1"
+python = "^3.8"
+mlflow = "1.22.0"
 
 
 [build-system]
