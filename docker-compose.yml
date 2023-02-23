@@ -1,11 +1,29 @@
 version: '3'
 services:
-  python:
+  mlflow:
     build:
       context: .
-      dockerfile: ./docker/Dockerfile
+      dockerfile: ./docker/mlflow/Dockerfile
+      target: builder-base
     volumes:
       - ./:/src
+      - ./docker/mlflow/tmp:/src/venv
     tty: true
     ports: 
-      - '5000:5000'
+      - "5000:5000"
+    restart: always
+
+  jupyter:
+    build:
+      context: .
+      dockerfile: ./docker/jupyter/Dockerfile
+      target: builder-base
+    volumes:
+      - ./project:/src/project
+      - ./docker/jupyter/tmp:/project/venv
+    tty: true
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on: 
+      - mlflow

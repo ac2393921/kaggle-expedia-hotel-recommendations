@@ -4,15 +4,19 @@ version = "0.1.0"
 description = ""
 authors = ["ac2393921 <ac2393921@gmail.com>"]
 readme = "README.md"
-packages = [{include = "colab_mlops"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
 mlflow = "1.22.0"
-protobuf = "3.20.1"
 numpy = "1.23.4"
+protobuf = "3.20.1"
+jupyter = "^1.0.0"
+jupyterlab = "^3.6.1"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[virtualenvs]
+in-project = true
