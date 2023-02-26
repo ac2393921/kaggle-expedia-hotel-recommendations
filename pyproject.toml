@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "colab-mlops"
+name = "kaggle-expedia-hotel-recommendations"
 version = "0.1.0"
 description = ""
 authors = ["ac2393921 <ac2393921@gmail.com>"]
