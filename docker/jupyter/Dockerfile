@@ -38,9 +38,11 @@ RUN apt-get update \
 
 RUN curl -sSL https://install.python-poetry.org | python3 -
 
-WORKDIR /src
+WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
-
 RUN poetry install
 
-CMD ["poetry", "run", "jupyter", "lab", "--ip=0.0.0.0", "--port=8000", "--allow-root", "--no-browser", "--NotebookApp.token=''"]
+FROM builder-base as develop
+COPY --from=builder-base $PYSETUP_PATH/.venv/lib/python3.8/site-packages /user/local/lib/python3.8/site-packages
+
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8000", "--allow-root", "--no-browser", "--NotebookApp.token=''"]

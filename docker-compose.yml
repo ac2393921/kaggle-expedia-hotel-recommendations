@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/mlflow/Dockerfile
-      target: builder-base
+      target: develop
     volumes:
       - ./:/src
       - ./docker/mlflow/tmp:/src/venv
@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/jupyter/Dockerfile
-      target: builder-base
+      target: develop
     volumes:
       - ./project:/src/project
       - ./docker/jupyter/tmp:/project/venv
