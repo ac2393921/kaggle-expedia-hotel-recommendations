@@ -1,7 +1,7 @@
-from datetime import datetime
-
 import numpy as np
-from pandera import Column, DataFrameSchema, Index
+from pandera import SchemaModel
+from pandera.typing import Bool, DataFrame, DateTime, Object, Series
+from pydantic import BaseModel
 
 DTYPES = {
     "site_name": np.uint8,
@@ -27,34 +27,29 @@ DTYPES = {
     "hotel_cluster": np.uint8,
 }
 
-BASE_SCHEMA = DataFrameSchema(
-    columns={
-        "date_time": Column(datetime),
-        "site_name": Column(np.uint8, required=False),
-        "posa_continent": Column(np.uint8, required=False),
-        "user_location_country": Column(np.uint16, required=False),
-        "user_location_region": Column(np.uint16, required=False),
-        "user_location_city": Column(np.uint16, required=False),
-        "orig_destination_distance": Column(np.float32, required=False, coerce=True),
-        "user_id": Column(np.uint32, required=False),
-        "is_mobile": Column(np.uint8, required=False),
-        "is_package": Column(np.uint8, required=False),
-        "channel": Column(np.uint8, required=False),
-        "srch_ci": Column(datetime),
-        "srch_co": Column(datetime),
-        "srch_adults_cnt": Column(np.uint8, required=False),
-        "srch_children_cnt": Column(np.uint8, required=False),
-        "srch_rm_cnt": Column(np.uint8, required=False),
-        "srch_destination_id": Column(np.uint32, required=False),
-        "srch_destination_type_id": Column(np.uint8, required=False),
-        "is_booking": Column(int, required=False),
-        "cnt": Column(np.uint64, required=False),
-        "hotel_continent": Column(np.uint8, required=False),
-        "hotel_country": Column(np.uint16, required=False),
-        "hotel_market": Column(np.uint16, required=False),
-        "hotel_cluster": Column(np.uint8, required=False),
-    },
-    index=Index(int),
-    strict=True,
-    coerce=True,
-)
+
+class BaseSchema(SchemaModel):
+    date_time: Series[Object]
+    site_name: Series[np.uint8]
+    posa_continent: Series[np.uint8]
+    user_location_country: Series[np.uint16]
+    user_location_region: Series[np.uint16]
+    user_location_city: Series[np.uint16]
+    orig_destination_distance: Series[np.float32]
+    user_id: Series[np.uint32]
+    is_mobile: Series[Bool]
+    is_package: Series[Bool]
+    channel: Series[np.uint8]
+    srch_ci: Series[Object]
+    srch_co: Series[Object]
+    srch_adults_cnt: Series[np.uint8]
+    srch_children_cnt: Series[np.uint8]
+    srch_rm_cnt: Series[np.uint8]
+    srch_destination_id: Series[np.uint32]
+    srch_destination_type_id: Series[np.uint8]
+    is_booking: Series[Bool]
+    cnt: Series[np.uint64]
+    hotel_continent: Series[np.uint8]
+    hotel_country: Series[np.uint16]
+    hotel_market: Series[np.uint16]
+    hotel_cluster: Series[np.uint8]
