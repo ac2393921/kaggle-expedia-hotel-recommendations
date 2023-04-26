@@ -4,6 +4,7 @@ from typing import Optional, Tuple
 import pandas as pd
 from loguru import logger
 from pydantic import BaseModel
+from tqdm import tqdm
 
 from src.models.base_model import BaseRecommendModel
 from src.models.eval import find_top_5, map_k
@@ -11,11 +12,7 @@ from src.models.eval import find_top_5, map_k
 
 @dataclass
 class Evaluation:
-    # eval_df: pd.DataFrame
     mapk: float
-    # mean_absolute_error: float
-    # mean_absolute_percentage_error: float
-    # root_mean_squared_error: float
 
 
 class Artifact(BaseModel):
@@ -53,19 +50,15 @@ class Trainer:
         predictions = model.predict(x=x)
 
         predictions_frame = pd.DataFrame(predictions)
-        # predictions_frame.columns = [i for i in range(0, 100)]
-        # eval_df = self.__organize_eval_df(df=x)
 
         preds = []
-        for _, row in predictions_frame.iterrows():
-            preds.append(find_top_5(row))
-        # print(preds)
-
-        # preds = (-predictions).argsort(axis=1)[:,:5]
-        # print(preds)
+        with tqdm(total=len(predictions_frame)) as pbar:
+            for _, row in tqdm(predictions_frame.iterrows()):
+                preds.append(find_top_5(row))
+                pbar.update(1)
 
         mapk = map_k([[l] for l in y], preds, k=5)
-        # logger.info(f"MAP@5: {map_k([[l] for l in y], preds, k=5)}")
+        logger.info(f"MAP@5: {mapk}")
 
         evaluation = Evaluation(mapk)
 
