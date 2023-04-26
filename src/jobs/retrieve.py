@@ -1,13 +1,8 @@
 from loguru import logger
 
 from src.dataset.data_manager import load_df_from_csv, load_test_df_from_csv
-from src.dataset.shema import (
-    TARGET_SCHEMA,
-    HotelTestSchema,
-    HotelTrainSchema,
-    RawData,
-    TestData,
-)
+from src.dataset.shema import (TARGET_SCHEMA, HotelTestSchema,
+                               HotelTrainSchema, RawData, TestData)
 
 
 class DataRetriever:

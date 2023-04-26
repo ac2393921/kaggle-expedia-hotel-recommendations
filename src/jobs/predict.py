@@ -1,12 +1,11 @@
 import pandas as pd
 from loguru import logger
 from tqdm import tqdm
+from tying import List
 
 from src.models.base_model import BaseRecommendModel
 from src.models.eval import find_top_5
 from src.models.preprocess import BasePreprocessPipeline
-
-from tying import List
 
 
 class Predicter:

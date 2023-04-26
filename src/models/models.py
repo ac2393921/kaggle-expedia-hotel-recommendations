@@ -6,12 +6,9 @@ from pydantic import BaseModel
 from src.models.base_model import BaseRecommendModel
 from src.models.randomforest_classifier import (
     RANDM_FOREST_CLASSIFIER_DEFAULT_PARAMS,
-    RandomForestClassifierRecommendModel,
-)
-from src.models.xgb_classifier import (
-    XGB_CLASSIFIER_DEFAULT_PARAMS,
-    XGBClassifierRecommendModel,
-)
+    RandomForestClassifierRecommendModel)
+from src.models.xgb_classifier import (XGB_CLASSIFIER_DEFAULT_PARAMS,
+                                       XGBClassifierRecommendModel)
 
 
 class CustomModelConfig:
