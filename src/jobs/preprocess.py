@@ -13,6 +13,16 @@ def random_split(
     target: DataFrame,
     test_size: float = 0.2,
 ) -> SplitData:
+    """ランダムにデータを分割する
+
+    Args:
+        train_data (DataFrame[TrainSchema]): _description_
+        target (DataFrame): _description_
+        test_size (float, optional): _description_. Defaults to 0.2.
+
+    Returns:
+        SplitData: _description_
+    """
     logger.info("random split")
 
     x_train, x_test, y_train, y_test = train_test_split(
@@ -35,8 +45,19 @@ def random_split(
 
 
 def train_test_split(data: any, data_preprocess_pipeline: BasePreprocessPipeline):
+    """訓練データとテストデータに分割する。テストデータは2014年8月以降のデータのみを使用する
+        前処理パイプラインを設定することで、前処理済みのデータを返す
+
+    Args:
+        data (any): _description_
+        data_preprocess_pipeline (BasePreprocessPipeline): _description_
+
+    Returns:
+        _type_: _description_
+    """
     preprocess_data = data_preprocess_pipeline.preprocess(data)
 
+    # 2013年と2014年8月以前のデータを訓練データとする
     train = preprocess_data[
         (
             (preprocess_data.year == 2013)

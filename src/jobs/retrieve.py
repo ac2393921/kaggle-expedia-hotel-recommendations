@@ -11,10 +11,21 @@ from src.dataset.shema import (
 
 
 class DataRetriever:
+    """データを取得するクラス"""
+
     def __init__(self) -> None:
         pass
 
     def retrieve_dataset(self, path: str, nrows: int = 10000) -> RawData:
+        """データを取得する
+
+        Args:
+            path (str): _description_
+            nrows (int, optional): _description_. Defaults to 10000.
+
+        Returns:
+            RawData: _description_
+        """
         logger.info("start retieve data")
         raw_df = load_df_from_csv(path, nrows)
         train_df = HotelTrainSchema(raw_df)
@@ -26,6 +37,7 @@ class DataRetriever:
         return raw_data
 
     def retrieve_test_dataset(self, path: str) -> TestData:
+        """テストデータを取得する"""
         logger.info("start retieve data")
         raw_df = load_test_df_from_csv(path)
         raw_id = raw_df["id"]
@@ -33,15 +45,8 @@ class DataRetriever:
         logger.info(raw_df.info())
         raw_df = HotelTestSchema(raw_df)
 
-        # raw_df["date_time"] = pd.to_datetime(raw_df["date_time"])
-        # raw_df["year"] = raw_df["date_time"].dt.year
-        # raw_df["month"] = raw_df["date_time"].dt.month
-
         logger.info(raw_df.columns)
         logger.info(raw_df.info())
-        # train_df = TrainSchema(train_df)
-        # target = raw_df.hotel_cluster
-        # TARGET_SCHEMA.validate(target)
         raw_data = TestData(id=raw_id, x=raw_df)
 
         return raw_data

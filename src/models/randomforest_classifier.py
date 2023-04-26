@@ -11,6 +11,12 @@ RANDM_FOREST_CLASSIFIER_DEFAULT_PARAMS = {}
 
 
 class RandomForestClassifierRecommendModel(BaseRecommendModel):
+    """RandomForestを使用したレコメンドモデル
+
+    Args:
+        BaseRecommendModel (_type_): _description_
+    """
+
     def __init__(self):
         self.name = "Random Forest Classifier"
         self.params: Dict = RANDM_FOREST_CLASSIFIER_DEFAULT_PARAMS

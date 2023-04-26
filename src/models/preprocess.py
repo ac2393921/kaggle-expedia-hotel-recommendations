@@ -6,6 +6,12 @@ from sklearn.decomposition import PCA
 
 
 class BasePreprocessPipeline(ABC):
+    """前処理のベースクラス
+
+    Args:
+        ABC (_type_): _description_
+    """
+
     def __init__(self):
         pass
 
@@ -19,6 +25,12 @@ class BasePreprocessPipeline(ABC):
 
 
 class DataPreprocessPipeline(BasePreprocessPipeline):
+    """前処理を行うクラス
+
+    Args:
+        BasePreprocessPipeline (_type_): _description_
+    """
+
     def __init__(self):
         pass
 
@@ -30,10 +42,21 @@ class DataPreprocessPipeline(BasePreprocessPipeline):
         x: pd.DataFrame,
         y=None,
     ) -> pd.DataFrame:
+        """前処理を実行する
+
+        Args:
+            x (pd.DataFrame): _description_
+            y (_type_, optional): _description_. Defaults to None.
+
+        Returns:
+            pd.DataFrame: _description_
+        """
+        # 年月日に変換
         x["date_time"] = pd.to_datetime(x["date_time"])
         x["year"] = x["date_time"].dt.year
         x["month"] = x["date_time"].dt.month
 
+        # 予約日とチェックイン日の差分を計算
         x["srch_ci"] = pd.to_datetime(x["srch_ci"], format="%Y-%m-%d", errors="coerce")
         x["srch_co"] = pd.to_datetime(x["srch_co"], format="%Y-%m-%d", errors="coerce")
 
@@ -44,8 +67,7 @@ class DataPreprocessPipeline(BasePreprocessPipeline):
             "timedelta64[D]"
         )
 
-        # For hotel check-in
-        # Month, Year, Day
+        # チェックイン日を年月日に変換
         x["Cin_day"] = x["srch_ci"].apply(lambda x: x.day)
         x["Cin_month"] = x["srch_ci"].apply(lambda x: x.month)
         x["Cin_year"] = x["srch_ci"].apply(lambda x: x.year)
@@ -56,9 +78,7 @@ class DataPreprocessPipeline(BasePreprocessPipeline):
         x["stay_dur"] = x["stay_dur"].fillna(1.0)
         x["no_of_days_bet_booking"] = x["no_of_days_bet_booking"].fillna(0.0)
 
-        ret = x
-        logger.info(ret.columns)
-
+        # 検索された距離をPCAで圧縮
         destinations = pd.read_csv("./project/data/destinations.csv")
         pca = PCA(n_components=3)
         dest_small = pca.fit_transform(
@@ -77,6 +97,7 @@ class DataPreprocessPipeline(BasePreprocessPipeline):
         for prop in carryover:
             props[prop] = x[prop]
 
+        # 泊数を計算
         date_props = ["month", "day", "dayofweek", "quarter"]
         for prop in date_props:
             props["ci_{0}".format(prop)] = getattr(x["srch_ci"].dt, prop)
@@ -88,6 +109,7 @@ class DataPreprocessPipeline(BasePreprocessPipeline):
         ret = ret.join(dest_small, on="srch_destination_id", how="left", rsuffix="dest")
         ret = ret.drop("srch_destination_iddest", axis=1)
 
+        # ダミー変数を作成
         # categorical_columns = [
         #     "hotel_continent",
         # ]

@@ -2,6 +2,16 @@ import numpy as np
 
 
 def map5eval(preds, dtrain, k=5):
+    """MAP@5を計算する
+
+    Args:
+        preds (_type_): _description_
+        dtrain (_type_): _description_
+        k (int, optional): _description_. Defaults to 5.
+
+    Returns:
+        _type_: _description_
+    """
     actual = dtrain.get_label()
     predicted = (-preds).argsort(axis=1)[:, :k]
     metric = 0.0
@@ -12,6 +22,14 @@ def map5eval(preds, dtrain, k=5):
 
 
 def find_top_5(row):
+    """トップ5のアイテムを取得する
+
+    Args:
+        row (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     return list(row.nlargest(5).index)
 
 

@@ -21,6 +21,8 @@ class Artifact(BaseModel):
 
 
 class Trainer:
+    """訓練用のクラス"""
+
     def __init__(self) -> None:
         pass
 
@@ -32,6 +34,15 @@ class Trainer:
         x_test: pd.DataFrame,
         y_test: pd.DataFrame,
     ):
+        """学習を行う
+
+        Args:
+            model (BaseRecommendModel): _description_
+            x_train (pd.DataFrame): _description_
+            y_train (pd.DataFrame): _description_
+            x_test (pd.DataFrame): _description_
+            y_test (pd.DataFrame): _description_
+        """
         logger.info("start train")
         model.train(
             x_train=x_train,
@@ -46,6 +57,16 @@ class Trainer:
         x: pd.DataFrame,
         y: pd.DataFrame,
     ) -> Evaluation:
+        """評価を行う
+
+        Args:
+            model (BaseRecommendModel): _description_
+            x (pd.DataFrame): _description_
+            y (pd.DataFrame): _description_
+
+        Returns:
+            Evaluation: _description_
+        """
         logger.info("start evaluation")
         predictions = model.predict(x=x)
 
@@ -72,6 +93,18 @@ class Trainer:
         x_test: pd.DataFrame,
         y_test: pd.DataFrame,
     ) -> Tuple[Evaluation, Artifact]:
+        """学習と評価を行う
+
+        Args:
+            model (BaseRecommendModel): _description_
+            x_train (pd.DataFrame): _description_
+            y_train (pd.DataFrame): _description_
+            x_test (pd.DataFrame): _description_
+            y_test (pd.DataFrame): _description_
+
+        Returns:
+            Tuple[Evaluation, Artifact]: _description_
+        """
         logger.info("start training and evaluation")
         self.train(
             model=model,
