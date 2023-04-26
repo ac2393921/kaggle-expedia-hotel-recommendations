@@ -14,6 +14,12 @@ XGB_CLASSIFIER_DEFAULT_PARAMS = {}
 
 
 class XGBClassifierRecommendModel(BaseRecommendModel):
+    """XGBoostを使用したレコメンドモデル
+
+    Args:
+        BaseRecommendModel (_type_): _description_
+    """
+
     def __init__(self):
         self.name = "XGBoost Classifier"
         self.params: Dict = XGB_CLASSIFIER_DEFAULT_PARAMS
