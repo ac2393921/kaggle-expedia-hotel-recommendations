@@ -3,26 +3,14 @@ from typing import Dict, Optional, Union
 import numpy as np
 import pandas as pd
 from loguru import logger
-from sklearn.preprocessing import LabelEncoder
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import LabelEncoder, StandardScaler
 from xgboost import XGBClassifier
 
 from src.models.base_model import BaseRecommendModel
 from src.models.eval import map5eval
 
-XGB_CLASSIFIER_DEFAULT_PARAMS = xgb_params = {
-    # "tree_method": "gpu_hist",
-    "objective": "multi:softprob",
-    "num_class": 100,
-    "learning_rate": 0.08,
-    "max_depth": 8,
-    "min_child_weight": 9,
-    "silent": 1,
-    "subsample": 0.8,
-    "colsample_bytree": 0.7,
-    "n_estimators": 100,
-    # "n_estimators": 10,
-    "seed": 42,
-}
+XGB_CLASSIFIER_DEFAULT_PARAMS = {}
 
 
 class XGBClassifierRecommendModel(BaseRecommendModel):
@@ -31,6 +19,13 @@ class XGBClassifierRecommendModel(BaseRecommendModel):
         self.params: Dict = XGB_CLASSIFIER_DEFAULT_PARAMS
         self.model: XGBClassifier = None
         self.reset_model(params=self.params)
+
+        self.pipe = Pipeline(
+            steps=[
+                ("standerd_scaler", StandardScaler()),
+                ("clf", self.model),
+            ]
+        )
 
     def reset_model(self, params: Optional[Dict] = None) -> None:
         if params is not None:
@@ -68,7 +63,6 @@ class XGBClassifierRecommendModel(BaseRecommendModel):
     def predict(
         self, x: Union[np.ndarray, pd.DataFrame]
     ) -> Union[np.ndarray, pd.DataFrame]:
-        # return self.model.predict(x)
         return self.model.predict_proba(x)
 
 
