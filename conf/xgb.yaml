@@ -1,0 +1,29 @@
+name: expedia_hotel_recommendations 
+jobs:
+  data:
+    source: local
+    train:
+      path: ./project/data/train.csv
+    test:
+      path: ./project/data/test.csv
+
+  model:
+    name: xgb_classifier
+    params:
+      objective: multi:softprob
+      num_class: 100
+      learning_rate: 0.08
+      max_depth: 8
+      min_child_weight: 9
+      silent: 1
+      subsample: 0.8
+      colsample_bytree: 0.7
+      n_estimators: 10
+      seed: 42
+
+  train:
+    run: true
+
+  predict:
+    run: true
+    register: true
