@@ -45,4 +45,5 @@ RUN poetry install
 FROM builder-base as develop
 COPY --from=builder-base $PYSETUP_PATH/.venv/lib/python3.8/site-packages /user/local/lib/python3.8/site-packages
 
+ENV PYTHONPATH /src
 CMD ["mlflow", "server", "--backend-store-uri", "/src/mlruns", "--host", "0.0.0.0", "--port", "5000"]

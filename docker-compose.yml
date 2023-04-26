@@ -7,7 +7,7 @@ services:
       target: develop
     volumes:
       - ./:/src
-      - ./docker/mlflow/tmp:/src/venv
+      - ./:/.venv
     working_dir: "/src"
     tty: true
     ports: 
